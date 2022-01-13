@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu18.04
+FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04
 
 
 # Labels
@@ -91,6 +91,7 @@ RUN apt-get -q update && \
         libglu1-mesa-dev \
         freeglut3-dev \
         mesa-common-dev \
+        mesa-utils \
         doxygen \
     && \
     apt-get clean && \
@@ -122,8 +123,5 @@ RUN ./install_pytorch.sh
 
 RUN ./build_adop.sh
 
-# patch cuda lib issue
+# set some default exports
 RUN echo "export LD_LIBRARY_PATH=\"${LD_LIBRARY_PATH}:/opt/conda/envs/adop/lib\"" >> ~/.bashrc
-
-# DISPLAY env
-RUN echo "export DISPLAY=host.docker.internal:0.0" >> ~/.bashrc
